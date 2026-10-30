@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>项目导航 · JJXBDJXH</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<style>
+  :root {
+    --bg-gradient: linear-gradient(145deg, #f9f0ff 0%, #e6d5ff 100%);
+    --surface: rgba(255, 255, 255, 0.7);
+    --surface-solid: #ffffff;
+    --text-primary: #1e1a2b;
+    --text-secondary: #4a3f5e;
+    --accent: #8a2be2;
+    --accent-glow: rgba(138, 43, 226, 0.3);
+    --border-light: rgba(255, 255, 255, 0.6);
+    --card-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.2);
+    --glass-blur: blur(12px);
+    --transition: all 0.35s ease;
+    --header-bg: rgba(255, 255, 255, 0.5);
+    --code-bg: rgba(138, 43, 226, 0.08);
+  }
+  .dark {
+    --bg-gradient: linear-gradient(145deg, #120e1a 0%, #1e162b 100%);
+    --surface: rgba(30, 22, 43, 0.7);
+    --surface-solid: #1e162b;
+    --text-primary: #f0eaff;
+    --text-secondary: #cbbff0;
+    --accent: #b87aff;
+    --accent-glow: rgba(184, 122, 255, 0.4);
+    --border-light: rgba(255, 255, 255, 0.08);
+    --card-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.6);
+    --header-bg: rgba(20, 15, 30, 0.7);
+    --code-bg: rgba(184, 122, 255, 0.1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC",
+                 "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+    background: var(--bg-gradient);
+    color: var(--text-primary);
+    line-height: 1.8;
+    -webkit-font-smoothing: antialiased;
+    transition: background 0.4s ease, color 0.3s ease;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    top: -20%; left: -10%;
+    width: 80vmax; height: 80vmax;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    opacity: 0.5; pointer-events: none; z-index: -2;
+    transition: opacity 0.5s;
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    bottom: -20%; right: -10%;
+    width: 70vmax; height: 70vmax;
+    background: radial-gradient(circle, rgba(255, 215, 0, 0.15) 0%, transparent 70%);
+    pointer-events: none; z-index: -2;
+  }
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 24px 80px;
+    position: relative; z-index: 1;
+  }
+  /* 工具栏 */
+  .toolbar {
+    display: flex; justify-content: flex-end; align-items: center;
+    gap: 0.8rem; flex-wrap: wrap; padding: 0.25rem 0.5rem;
+    background: var(--header-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 100px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.2);
+    margin-bottom: 32px;
+  }
+  .tool-btn {
+    background: transparent; border: none; color: var(--text-primary);
+    font-size: 0.95rem; font-weight: 500; padding: 0.5rem 1.2rem;
+    border-radius: 40px; cursor: pointer; display: flex; align-items: center;
+    gap: 0.5rem; transition: var(--transition); letter-spacing: 0.3px;
+    backdrop-filter: blur(4px); font-family: inherit; text-decoration: none;
+  }
+  .tool-btn i { font-size: 1rem; color: var(--accent); transition: var(--transition); }
+  .tool-btn:hover { background: var(--accent); color: white; box-shadow: 0 0 15px var(--accent-glow); }
+  .tool-btn:hover i { color: white; }
+  .divider { width: 1px; height: 25px; background: var(--border-light); margin: 0 0.2rem; }
+
+  /* 头部 */
+  .hero {
+    text-align: center; margin-bottom: 40px;
+    display: flex; flex-direction: column; align-items: center; gap: 1rem;
+  }
+  .hero-icon {
+    font-size: 3.2rem; color: var(--accent);
+    width: 6rem; height: 6rem;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(138, 43, 226, 0.12); border-radius: 2.5rem;
+    box-shadow: 0 0 0 1px var(--border-light) inset, 0 15px 35px -10px var(--accent-glow);
+    transition: var(--transition);
+  }
+  .hero-icon:hover {
+    background: var(--accent); color: white;
+    transform: scale(1.05) rotate(3deg);
+    box-shadow: 0 15px 35px -5px var(--accent-glow);
+  }
+  .hero h1 {
+    font-size: clamp(1.9rem, 7vw, 3.2rem); font-weight: 800;
+    letter-spacing: -0.02em;
+    background: linear-gradient(120deg, var(--accent), #ff9a9e, var(--accent));
+    background-size: 200% auto;
+    -webkit-background-clip: text; background-clip: text;
+    color: transparent; animation: shimmer 6s linear infinite;
+    text-shadow: 0 0 30px var(--accent-glow); line-height: 1.2;
+  }
+  @keyframes shimmer {
+    0% { background-position: 0% center; }
+    100% { background-position: 200% center; }
+  }
+  .hero .tagline {
+    font-size: 1.05rem; color: var(--text-secondary);
+    background: var(--surface);
+    backdrop-filter: var(--glass-blur);
+    padding: 0.4rem 1.8rem; border-radius: 60px;
+    border: 1px solid var(--border-light);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    display: inline-flex; align-items: center; gap: 0.6rem;
+  }
+  .hero .tagline i { color: var(--accent); }
+
+  /* 导航卡片网格 */
+  .nav-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.4rem;
+    margin-bottom: 22px;
+  }
+  .nav-card {
+    display: flex; flex-direction: column;
+    background: var(--surface);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-radius: 2rem;
+    padding: 28px 26px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-light);
+    transition: var(--transition);
+    text-decoration: none;
+    color: var(--text-primary);
+    position: relative;
+    overflow: hidden;
+  }
+  .nav-card::before {
+    content: '';
+    position: absolute;
+    top: -40%; right: -30%;
+    width: 12rem; height: 12rem;
+    background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  .nav-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 30px 50px -15px var(--accent-glow);
+    border-color: var(--accent);
+  }
+  .nav-card:hover::before { opacity: 1; }
+
+  .nav-card .card-icon {
+    width: 3.4rem; height: 3.4rem;
+    border-radius: 1.1rem;
+    background: rgba(138, 43, 226, 0.12);
+    color: var(--accent);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 1rem;
+    transition: var(--transition);
+  }
+  .nav-card:hover .card-icon {
+    background: var(--accent);
+    color: white;
+    transform: scale(1.06) rotate(-3deg);
+  }
+  .nav-card h2 {
+    font-size: 1.2rem; font-weight: 700;
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+  }
+  .nav-card p {
+    font-size: 0.88rem; color: var(--text-secondary);
+    flex: 1; margin-bottom: 1.1rem;
+  }
+  .nav-card .url {
+    font-family: 'SFMono-Regular', Consolas, monospace;
+    font-size: 0.76rem; color: var(--text-secondary);
+    background: var(--code-bg);
+    border: 1px solid var(--border-light);
+    border-radius: 40px;
+    padding: 0.3rem 0.9rem;
+    word-break: break-all;
+    display: inline-block;
+    margin-bottom: 1rem;
+    opacity: 0.9;
+  }
+  .nav-card .go {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-size: 0.9rem; font-weight: 600;
+    color: var(--accent);
+    transition: var(--transition);
+  }
+  .nav-card:hover .go { gap: 0.75rem; }
+
+  /* 页脚 */
+  .footer {
+    margin-top: 3rem; text-align: center; font-size: 0.85rem;
+    color: var(--text-secondary); opacity: 0.8;
+    border-top: 1px solid var(--border-light); padding-top: 1.8rem;
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    .container { padding: 16px 14px 60px; }
+    .toolbar { justify-content: center; width: 100%; }
+    .hero-icon { width: 5rem; height: 5rem; font-size: 2.6rem; border-radius: 2rem; }
+    .nav-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .nav-card { padding: 22px 20px; border-radius: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 工具栏 -->
+  <div class="toolbar">
+    <a href="https://jjxbdjxh.eu.cc" class="tool-btn">
+      <i class="fas fa-house"></i>
+      <span>主页</span>
+    </a>
+    <div class="divider"></div>
+    <button class="tool-btn" id="themeToggle" aria-label="切换深浅色">
+      <i class="fas fa-moon" id="themeIcon"></i>
+      <span id="themeText">深色</span>
+    </button>
+  </div>
+
+  <!-- 头部 -->
+  <div class="hero">
+    <div class="hero-icon"><i class="fas fa-compass"></i></div>
+    <h1>项目导航</h1>
+    <div class="tagline">
+      <i class="fas fa-shield-halved"></i>
+      <span>JJXBDJXH · 项目入口集合</span>
+    </div>
+  </div>
+
+  <!-- 导航卡片 -->
+  <div class="nav-grid">
+
+    <!-- 王森 -->
+    <a href="https://project.pet.wangsen.jjxbdjxh.eu.cc" target="_blank" rel="noopener" class="nav-card">
+      <div class="card-icon"><i class="fas fa-user-astronaut"></i></div>
+      <h2>王森</h2>
+      <p>王森主题项目页面，点击进入查看详情与功能。</p>
+      <span class="url">project.pet.wangsen.jjxbdjxh.eu.cc</span>
+      <span class="go">进入项目 <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <!-- 老秦 -->
+    <a href="https://project.pet.laoqin.jjxbdjxh.eu.cc" target="_blank" rel="noopener" class="nav-card">
+      <div class="card-icon"><i class="fas fa-cat"></i></div>
+      <h2>老秦</h2>
+      <p>桌宠老秦项目主页，会走会跳的桌面小伙伴。</p>
+      <span class="url">project.pet.laoqin.jjxbdjxh.eu.cc</span>
+      <span class="go">进入项目 <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+    <!-- gay -->
+    <a href="https://project.pet.gay.jjxbdjxh.eu.cc" target="_blank" rel="noopener" class="nav-card">
+      <div class="card-icon"><i class="fas fa-rainbow"></i></div>
+      <h2>孙桐</h2>
+      <p>孙桐 主题项目页面，点击进入查看详情与功能。</p>
+      <span class="url">project.pet.gay.jjxbdjxh.eu.cc</span>
+      <span class="go">进入项目 <i class="fas fa-arrow-right"></i></span>
+    </a>
+
+  </div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    © 2025 JJXBDJXH · <a href="https://jjxbdjxh.eu.cc" target="_blank">jjxbdjxh.eu.cc</a> · 项目导航
+  </div>
+
+</div>
+
+<script>
+  // ========== 主题切换（与之前页面一致） ==========
+  const THEME_KEY = 'jjxbdjxh_theme';
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
+  const themeText = document.getElementById('themeText');
+
+  function applyTheme(dark) {
+    document.documentElement.classList.toggle('dark', dark);
+    themeIcon.className = dark ? 'fas fa-sun' : 'fas fa-moon';
+    themeText.textContent = dark ? '浅色' : '深色';
+    localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light');
+  }
+
+  (function initTheme() {
+    const saved = localStorage.getItem(THEME_KEY);
+    const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(saved ? saved === 'dark' : prefersDark);
+  })();
+
+  themeToggle.addEventListener('click', () => {
+    applyTheme(!document.documentElement.classList.contains('dark'));
+  });
+</script>
+</body>
+</html>
